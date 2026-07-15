@@ -3,7 +3,7 @@ import { motion, useMotionValueEvent, useScroll } from "framer-motion";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { AudioToggle } from "./AudioToggle";
-import { company } from "@/lib/projects.data";
+import { brand, company } from "@/lib/projects.data";
 
 const items = [
   { label: "Legacy", to: "/lobby" as const },
@@ -38,12 +38,15 @@ export function Nav() {
     >
       <div className="mx-auto flex max-w-[1400px] items-center justify-between gap-4 px-6 lg:px-10">
         <Link to="/" className="group relative flex items-center gap-3" aria-label={company.name}>
-          <span className="grid h-9 w-9 place-items-center brass-frame bg-obsidian text-brass-glow" aria-hidden>
-            <span className="font-display text-lg">S</span>
-          </span>
-          <span className="hidden flex-col leading-none sm:flex">
-            <span className="font-display text-lg text-obsidian">Sri Suprabhatham</span>
-            <span className="eyebrow text-brass-deep">Builders · Est. 2000</span>
+          <img
+            src={brand.logo}
+            alt=""
+            aria-hidden
+            className="h-11 w-11 shrink-0 object-contain"
+          />
+          <span className="hidden flex-col leading-tight sm:flex">
+            <span className="font-display text-lg text-obsidian">Sri Suprabatham Builder</span>
+            <span className="eyebrow text-brass-deep">Est. {company.since} · Chennai</span>
           </span>
         </Link>
 
