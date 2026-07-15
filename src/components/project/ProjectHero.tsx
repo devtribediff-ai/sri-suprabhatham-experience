@@ -2,6 +2,8 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { PlaceholderImage } from "@/components/ui/PlaceholderImage";
 import { DustField } from "@/components/world/DustField";
+import { FogBands } from "@/components/world/FogBands";
+import { GodRays } from "@/components/world/GodRays";
 import { rise, softRise, sriEase, stagger } from "@/lib/motion";
 import type { Project } from "@/lib/projects.schema";
 
@@ -28,7 +30,11 @@ export function ProjectHero({ project }: { project: Project }) {
           fallback="obsidian"
         />
       </motion.div>
+      <GodRays intensity={0.22} />
+      <FogBands tone="warm" />
       <DustField count={80} />
+
+
 
       <motion.div
         variants={stagger(0.1, 0.4)}

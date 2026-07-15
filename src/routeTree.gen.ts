@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ProjectsRouteImport } from './routes/projects'
+import { Route as OutroRouteImport } from './routes/outro'
 import { Route as LoungeRouteImport } from './routes/lounge'
 import { Route as LobbyRouteImport } from './routes/lobby'
 import { Route as IndexRouteImport } from './routes/index'
@@ -25,6 +26,11 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
 const ProjectsRoute = ProjectsRouteImport.update({
   id: '/projects',
   path: '/projects',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OutroRoute = OutroRouteImport.update({
+  id: '/outro',
+  path: '/outro',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoungeRoute = LoungeRouteImport.update({
@@ -57,6 +63,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/lobby': typeof LobbyRoute
   '/lounge': typeof LoungeRoute
+  '/outro': typeof OutroRoute
   '/projects': typeof ProjectsRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/projects/$slug': typeof ProjectsSlugRoute
@@ -66,6 +73,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/lobby': typeof LobbyRoute
   '/lounge': typeof LoungeRoute
+  '/outro': typeof OutroRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/projects/$slug': typeof ProjectsSlugRoute
   '/projects': typeof ProjectsIndexRoute
@@ -75,6 +83,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/lobby': typeof LobbyRoute
   '/lounge': typeof LoungeRoute
+  '/outro': typeof OutroRoute
   '/projects': typeof ProjectsRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/projects/$slug': typeof ProjectsSlugRoute
@@ -86,6 +95,7 @@ export interface FileRouteTypes {
     | '/'
     | '/lobby'
     | '/lounge'
+    | '/outro'
     | '/projects'
     | '/sitemap.xml'
     | '/projects/$slug'
@@ -95,6 +105,7 @@ export interface FileRouteTypes {
     | '/'
     | '/lobby'
     | '/lounge'
+    | '/outro'
     | '/sitemap.xml'
     | '/projects/$slug'
     | '/projects'
@@ -103,6 +114,7 @@ export interface FileRouteTypes {
     | '/'
     | '/lobby'
     | '/lounge'
+    | '/outro'
     | '/projects'
     | '/sitemap.xml'
     | '/projects/$slug'
@@ -113,6 +125,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LobbyRoute: typeof LobbyRoute
   LoungeRoute: typeof LoungeRoute
+  OutroRoute: typeof OutroRoute
   ProjectsRoute: typeof ProjectsRouteWithChildren
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
 }
@@ -131,6 +144,13 @@ declare module '@tanstack/react-router' {
       path: '/projects'
       fullPath: '/projects'
       preLoaderRoute: typeof ProjectsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/outro': {
+      id: '/outro'
+      path: '/outro'
+      fullPath: '/outro'
+      preLoaderRoute: typeof OutroRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/lounge': {
@@ -189,6 +209,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LobbyRoute: LobbyRoute,
   LoungeRoute: LoungeRoute,
+  OutroRoute: OutroRoute,
   ProjectsRoute: ProjectsRouteWithChildren,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
 }

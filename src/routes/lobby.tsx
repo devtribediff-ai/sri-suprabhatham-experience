@@ -4,6 +4,7 @@ import { LegacyTimeline } from "@/components/lobby/LegacyTimeline";
 import { FounderCard } from "@/components/lobby/FounderCard";
 import { VisionMission } from "@/components/lobby/VisionMission";
 import { AwardsRibbon } from "@/components/lobby/AwardsRibbon";
+import { QualityPromise } from "@/components/lobby/QualityPromise";
 import { BrassLink } from "@/components/ui/BrassButton";
 import { company } from "@/lib/projects.data";
 
@@ -25,13 +26,14 @@ function LobbyPage() {
   return (
     <>
       <MarbleHall />
-      <LegacyTimeline />
       <section className="relative bg-ivory py-28 md:py-40">
         <div className="mx-auto flex max-w-[1400px] flex-col gap-28 px-6 lg:px-10">
           <FounderCard person={company.founder} eyebrow="The Founder" />
           <FounderCard person={company.managingDirector} eyebrow="The Managing Director" align="right" />
         </div>
       </section>
+      <LegacyTimeline />
+      <QualityPromise />
       <VisionMission />
       <AwardsRibbon />
 
@@ -49,3 +51,4 @@ function LobbyPage() {
     </>
   );
 }
+

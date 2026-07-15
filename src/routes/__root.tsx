@@ -14,6 +14,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Nav } from "@/components/ui/Nav";
 import { Cursor } from "@/components/ui/Cursor";
 import { AudioHost } from "@/components/ui/AudioHost";
+import { CinematicTransition } from "@/components/world/CinematicTransition";
 import { company } from "@/lib/projects.data";
 
 const SITE_NAME = "Sri Suprabatham Builder";
@@ -147,6 +148,7 @@ function RootComponent() {
       <Nav />
       <Cursor />
       <AudioHost />
+      <CinematicTransition />
       <main>
         <Outlet />
       </main>

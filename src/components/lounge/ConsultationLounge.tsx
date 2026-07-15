@@ -2,6 +2,8 @@ import { motion } from "framer-motion";
 import { Link } from "@tanstack/react-router";
 import { BrassButton } from "@/components/ui/BrassButton";
 import { PlaceholderImage } from "@/components/ui/PlaceholderImage";
+import { DustField } from "@/components/world/DustField";
+import { GodRays } from "@/components/world/GodRays";
 import { rise, softRise, sriEase, stagger } from "@/lib/motion";
 import type { Project } from "@/lib/projects.schema";
 
@@ -47,6 +49,8 @@ export function ConsultationLounge({
         className="pointer-events-none absolute inset-x-0 top-0 h-1/2"
         style={{ background: "radial-gradient(50% 40% at 50% 0%, oklch(0.72 0.11 78 / 0.4), transparent 70%)" }}
       />
+      <GodRays intensity={0.25} />
+      <DustField count={70} />
 
       <div className="relative z-10 mx-auto grid max-w-[1400px] gap-16 px-6 md:grid-cols-12 md:gap-20 lg:px-10">
         <motion.header

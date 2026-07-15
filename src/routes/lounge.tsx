@@ -36,6 +36,18 @@ function LoungePage() {
         subtitle="Choose the way you would like to begin. Whichever door you knock on, it opens on the same side of the studio."
         actions={actions}
       />
+      <section className="relative bg-obsidian py-20 text-center text-ivory">
+        <p className="eyebrow text-brass-glow">Conclude the Journey</p>
+        <h3 className="mx-auto mt-4 max-w-2xl font-display text-3xl md:text-5xl">
+          Watch the <span className="text-brass-gradient">closing frame</span>.
+        </h3>
+        <a
+          href="/outro"
+          className="mt-8 inline-block border border-brass/50 px-8 py-3 text-[11px] uppercase tracking-[0.32em] text-brass-glow transition-colors hover:border-brass hover:bg-brass/10"
+        >
+          Depart the experience
+        </a>
+      </section>
     </div>
   );
 }
