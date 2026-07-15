@@ -26,13 +26,24 @@ export function FounderCard({ person, align = "left", eyebrow }: Props) {
     >
       <div className="md:col-span-5 md:[direction:ltr]">
         <motion.div variants={rise} className="relative">
-          <PlaceholderImage
-            src={person.portrait.src}
-            alt={person.portrait.alt}
-            aspect="aspect-[3/4]"
-            fit="cover"
-            className="brass-frame"
-          />
+          <div
+            className="brass-frame overflow-hidden"
+            style={{ borderTopLeftRadius: "50% 22%", borderTopRightRadius: "50% 22%" }}
+          >
+            <PlaceholderImage
+              src={person.portrait.src}
+              alt={person.portrait.alt}
+              aspect="aspect-[3/4]"
+              fit="cover"
+            />
+          </div>
+          {/* Engraved name plate */}
+          <div
+            className="absolute -bottom-6 left-1/2 -translate-x-1/2 brass-frame bg-obsidian px-6 py-2 text-center text-ivory"
+            style={{ boxShadow: "var(--shadow-brass)" }}
+          >
+            <span className="eyebrow text-brass-glow">Est. 2002</span>
+          </div>
           {/* Signature brass corner tag */}
           <div
             aria-hidden
