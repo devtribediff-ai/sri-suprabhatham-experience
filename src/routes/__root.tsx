@@ -11,22 +11,24 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { Nav } from "@/components/ui/Nav";
+import { Cursor } from "@/components/ui/Cursor";
+import { AudioHost } from "@/components/ui/AudioHost";
+import { company } from "@/lib/projects.data";
+
+const SITE_NAME = "Sri Suprabhatham Builders";
+const SITE_TAGLINE = "Building Trust Since 2000 — Boutique luxury residences in Chennai.";
 
 function NotFoundComponent() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
+    <div className="flex min-h-dvh items-center justify-center bg-ivory px-4 text-obsidian">
       <div className="max-w-md text-center">
-        <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          The page you're looking for doesn't exist or has been moved.
-        </p>
-        <div className="mt-6">
-          <Link
-            to="/"
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-          >
-            Go home
+        <p className="eyebrow text-brass-deep">404</p>
+        <h1 className="mt-4 font-display text-6xl">This wing is not open yet.</h1>
+        <p className="mt-4 text-muted-foreground">The page you are looking for has moved or does not exist.</p>
+        <div className="mt-8 flex justify-center gap-3">
+          <Link to="/" className="border border-obsidian/25 px-6 py-3 text-[11px] uppercase tracking-[0.28em] transition-colors hover:border-brass hover:text-brass">
+            Return to the entrance
           </Link>
         </div>
       </div>
@@ -40,31 +42,21 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   useEffect(() => {
     reportLovableError(error, { boundary: "tanstack_root_error_component" });
   }, [error]);
-
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
+    <div className="flex min-h-dvh items-center justify-center bg-ivory px-4 text-obsidian">
       <div className="max-w-md text-center">
-        <h1 className="text-xl font-semibold tracking-tight text-foreground">
-          This page didn't load
-        </h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Something went wrong on our end. You can try refreshing or head back home.
-        </p>
-        <div className="mt-6 flex flex-wrap justify-center gap-2">
+        <p className="eyebrow text-brass-deep">Something went quiet</p>
+        <h1 className="mt-4 font-display text-5xl">This page didn&apos;t load.</h1>
+        <p className="mt-4 text-muted-foreground">You can try again or return to the entrance.</p>
+        <div className="mt-8 flex flex-wrap justify-center gap-3">
           <button
-            onClick={() => {
-              router.invalidate();
-              reset();
-            }}
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            onClick={() => { router.invalidate(); reset(); }}
+            className="border border-obsidian bg-obsidian px-6 py-3 text-[11px] uppercase tracking-[0.28em] text-ivory transition-colors hover:bg-obsidian/85"
           >
             Try again
           </button>
-          <a
-            href="/"
-            className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
-          >
-            Go home
+          <a href="/" className="border border-obsidian/25 px-6 py-3 text-[11px] uppercase tracking-[0.28em] transition-colors hover:border-brass hover:text-brass">
+            Return
           </a>
         </div>
       </div>
@@ -77,21 +69,47 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: `${SITE_NAME} — ${company.tagline}` },
+      { name: "description", content: SITE_TAGLINE },
+      { name: "author", content: SITE_NAME },
+      { name: "theme-color", content: "#0E0D0B" },
+      { property: "og:site_name", content: SITE_NAME },
+      { property: "og:title", content: `${SITE_NAME} — ${company.tagline}` },
+      { property: "og:description", content: SITE_TAGLINE },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
+      { rel: "stylesheet", href: appCss },
+      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      // Fonts — Cormorant Garamond (display) + Karla (body). Loaded via <link> per Tailwind v4 rules.
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: appCss,
+        href: "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Karla:wght@300;400;500;600&display=swap",
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          name: SITE_NAME,
+          foundingDate: `${company.since}`,
+          description: SITE_TAGLINE,
+          telephone: company.phones[0],
+          email: company.email,
+          address: {
+            "@type": "PostalAddress",
+            streetAddress: company.address,
+            addressLocality: "Chennai",
+            addressRegion: "TN",
+            addressCountry: "IN",
+          },
+        }),
+      },
     ],
   }),
   shellComponent: RootShell,
@@ -116,11 +134,59 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
-
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <Nav />
+      <Cursor />
+      <AudioHost />
+      <main>
+        <Outlet />
+      </main>
+      <SiteFooter />
     </QueryClientProvider>
+  );
+}
+
+function SiteFooter() {
+  return (
+    <footer className="relative border-t border-obsidian/10 bg-ivory py-16 text-obsidian">
+      <div className="mx-auto grid max-w-[1400px] gap-10 px-6 md:grid-cols-12 lg:px-10">
+        <div className="md:col-span-4">
+          <div className="flex items-center gap-3">
+            <span className="grid h-9 w-9 place-items-center brass-frame bg-obsidian text-brass-glow" aria-hidden>
+              <span className="font-display text-lg">S</span>
+            </span>
+            <span className="font-display text-xl">{SITE_NAME}</span>
+          </div>
+          <p className="mt-4 max-w-xs text-sm text-muted-foreground">{SITE_TAGLINE}</p>
+        </div>
+        <div className="md:col-span-3">
+          <p className="eyebrow text-brass-deep">Address</p>
+          <address className="mt-3 text-sm not-italic leading-relaxed text-obsidian">
+            {company.address}
+          </address>
+        </div>
+        <div className="md:col-span-3">
+          <p className="eyebrow text-brass-deep">Contact</p>
+          <ul className="mt-3 space-y-2 text-sm">
+            {company.phones.map((p) => (
+              <li key={p}><a href={`tel:${p.replace(/\s+/g, "")}`} className="hover:text-brass">{p}</a></li>
+            ))}
+            <li><a href={`mailto:${company.email}`} className="hover:text-brass">{company.email}</a></li>
+          </ul>
+        </div>
+        <div className="md:col-span-2">
+          <p className="eyebrow text-brass-deep">Follow</p>
+          <ul className="mt-3 space-y-2 text-sm">
+            {company.socials.map((s) => (
+              <li key={s.label}><a href={s.href} className="hover:text-brass">{s.label}</a></li>
+            ))}
+          </ul>
+        </div>
+      </div>
+      <div className="mx-auto mt-14 max-w-[1400px] border-t border-obsidian/10 px-6 pt-6 text-xs uppercase tracking-[0.28em] text-obsidian/50 lg:px-10">
+        © {new Date().getFullYear()} {SITE_NAME}. Composed with restraint.
+      </div>
+    </footer>
   );
 }
