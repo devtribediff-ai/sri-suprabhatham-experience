@@ -6,9 +6,9 @@ import { company } from "@/lib/projects.data";
 export const Route = createFileRoute("/lounge")({
   head: () => ({
     meta: [
-      { title: "The Consultation Lounge — Sri Suprabhatham" },
+      { title: "The Consultation Lounge — Sri Suprabatham" },
       { name: "description", content: "Book a private site visit, schedule a meeting, chat on WhatsApp, or request a brochure. Every enquiry is met personally." },
-      { property: "og:title", content: "The Consultation Lounge — Sri Suprabhatham" },
+      { property: "og:title", content: "The Consultation Lounge — Sri Suprabatham" },
       { property: "og:description", content: "Book a site visit, schedule a meeting, WhatsApp, call, or request a brochure." },
       { property: "og:url", content: "/lounge" },
     ],
@@ -18,9 +18,9 @@ export const Route = createFileRoute("/lounge")({
 });
 
 function LoungePage() {
-  const wa = `https://wa.me/${company.whatsapp.replace(/[^0-9]/g, "")}?text=${encodeURIComponent("Hello, I would like to consult with Sri Suprabhatham Builders.")}`;
+  const wa = `https://wa.me/${company.whatsapp.replace(/[^0-9]/g, "")}?text=${encodeURIComponent("Hello, I would like to consult with Sri Suprabatham Builder.")}`;
   const tel = `tel:${company.phones[0].replace(/\s+/g, "")}`;
-  const mail = `mailto:${company.email}?subject=${encodeURIComponent("Enquiry — Sri Suprabhatham")}`;
+  const mail = `mailto:${company.email}?subject=${encodeURIComponent("Enquiry — Sri Suprabatham")}`;
   const actions: LoungeAction[] = [
     { id: "visit", title: "Book a Site Visit", hint: "Private walkthrough at any residence", primary: true, href: mail, icon: <MapPin size={22} strokeWidth={1.25} /> },
     { id: "meeting", title: "Schedule a Meeting", hint: "Consult with our design lead", href: mail, icon: <Calendar size={22} strokeWidth={1.25} /> },

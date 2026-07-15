@@ -13,9 +13,9 @@ const MiniatureCity = lazy(() =>
 export const Route = createFileRoute("/projects/")({
   head: () => ({
     meta: [
-      { title: "The Projects — Sri Suprabhatham Builders" },
+      { title: "The Projects — Sri Suprabatham Builder" },
       { name: "description", content: "A miniature city of the studio's residences. Hover to bring a building to life. Click to step inside." },
-      { property: "og:title", content: "The Projects — Sri Suprabhatham Builders" },
+      { property: "og:title", content: "The Projects — Sri Suprabatham Builder" },
       { property: "og:description", content: "Explore Mathura, Aadya, Aastha, Ayodaya, and Elite as glowing architectural models." },
       { property: "og:url", content: "/projects" },
     ],
