@@ -1,6 +1,6 @@
-import { Link, useMatchRoute } from "@tanstack/react-router";
+import { Link, useMatchRoute, useRouterState } from "@tanstack/react-router";
 import { motion, useMotionValueEvent, useScroll } from "framer-motion";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { cn } from "@/lib/utils";
 import { AudioToggle } from "./AudioToggle";
 import { brand, company } from "@/lib/projects.data";
@@ -12,19 +12,37 @@ const items = [
   { label: "Lounge", to: "/lounge" as const },
 ];
 
+/** Routes that render on a dark background and therefore need light nav text. */
+const DARK_ROUTES = ["/", "/projects", "/outro"];
+const DARK_ROUTE_PREFIXES = ["/projects/"];
+
 /**
- * Transparent-on-hero navigation that turns to a hairline glass strip once
- * the user has scrolled past ~15% of the viewport. Mobile: brass-framed drawer.
+ * Auto-contrast nav: reads the current pathname + scroll position and
+ * flips between light-on-dark and dark-on-light so the wordmark stays
+ * legible against any hero. A soft blur pill fades in past 40px scroll to
+ * guarantee contrast when content passes under it.
  */
 export function Nav() {
   const { scrollY } = useScroll();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const match = useMatchRoute();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   useMotionValueEvent(scrollY, "change", (v) => {
-    setScrolled(v > 80);
+    setScrolled(v > 40);
   });
+
+  const onDarkHero = useMemo(() => {
+    if (scrolled) return false; // once past hero, everyone gets glass pill
+    if (DARK_ROUTES.includes(pathname)) return true;
+    return DARK_ROUTE_PREFIXES.some((p) => pathname.startsWith(p));
+  }, [pathname, scrolled]);
+
+  const textClass = onDarkHero ? "text-ivory" : "text-obsidian";
+  const subtleTextClass = onDarkHero ? "text-ivory/75 hover:text-ivory" : "text-obsidian/75 hover:text-obsidian";
+  const borderClass = onDarkHero ? "border-ivory/25 hover:border-brass hover:text-brass" : "border-obsidian/25 hover:border-brass hover:text-brass";
+  const eyebrowClass = onDarkHero ? "text-brass-glow" : "text-brass-deep";
 
   return (
     <motion.nav
@@ -38,15 +56,10 @@ export function Nav() {
     >
       <div className="mx-auto flex max-w-[1400px] items-center justify-between gap-4 px-6 lg:px-10">
         <Link to="/" className="group relative flex items-center gap-3" aria-label={company.name}>
-          <img
-            src={brand.logo}
-            alt=""
-            aria-hidden
-            className="h-11 w-11 shrink-0 object-contain"
-          />
-          <span className="hidden flex-col leading-tight sm:flex">
-            <span className="font-display text-lg text-obsidian">Sri Suprabatham Builder</span>
-            <span className="eyebrow text-brass-deep">Est. {company.since} · Chennai</span>
+          <img src={brand.logo} alt="" aria-hidden className="h-11 w-11 shrink-0 object-contain" />
+          <span className={cn("hidden flex-col leading-tight sm:flex", textClass)}>
+            <span className="font-display text-lg">Sri Suprabatham Builder</span>
+            <span className={cn("eyebrow", eyebrowClass)}>Est. {company.since} · Chennai</span>
           </span>
         </Link>
 
@@ -59,7 +72,7 @@ export function Nav() {
                   to={it.to}
                   className={cn(
                     "group relative px-4 py-2 text-[11px] uppercase tracking-[0.28em] transition-colors",
-                    active ? "text-brass-deep" : "text-obsidian/75 hover:text-obsidian",
+                    active ? (onDarkHero ? "text-brass-glow" : "text-brass-deep") : subtleTextClass,
                   )}
                 >
                   {it.label}
@@ -79,7 +92,11 @@ export function Nav() {
           <AudioToggle />
           <Link
             to="/lounge"
-            className="hidden items-center gap-2 border border-obsidian/25 px-5 py-2.5 text-[10px] uppercase tracking-[0.28em] text-obsidian transition-colors duration-500 hover:border-brass hover:text-brass sm:inline-flex"
+            className={cn(
+              "hidden items-center gap-2 border px-5 py-2.5 text-[10px] uppercase tracking-[0.28em] transition-colors duration-500 sm:inline-flex",
+              textClass,
+              borderClass,
+            )}
           >
             Consult
           </Link>
@@ -87,7 +104,7 @@ export function Nav() {
             type="button"
             onClick={() => setOpen((o) => !o)}
             aria-label={open ? "Close menu" : "Open menu"}
-            className="grid h-10 w-10 place-items-center border border-obsidian/20 text-obsidian md:hidden"
+            className={cn("grid h-10 w-10 place-items-center border md:hidden", textClass, onDarkHero ? "border-ivory/25" : "border-obsidian/20")}
           >
             <span className="relative block h-3 w-4">
               <span className={cn("absolute inset-x-0 top-0 h-px bg-current transition-transform", open && "translate-y-[6px] rotate-45")} />
