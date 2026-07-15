@@ -16,8 +16,8 @@ import { Cursor } from "@/components/ui/Cursor";
 import { AudioHost } from "@/components/ui/AudioHost";
 import { company } from "@/lib/projects.data";
 
-const SITE_NAME = "Sri Suprabhatham Builders";
-const SITE_TAGLINE = "Building Trust Since 2000 — Boutique luxury residences in Chennai.";
+const SITE_NAME = "Sri Suprabatham Builder";
+const SITE_TAGLINE = "Built on Trust. Designed for Generations. Boutique luxury residences in Chennai since 2002.";
 
 function NotFoundComponent() {
   return (
@@ -78,12 +78,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:description", content: SITE_TAGLINE },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { title: "Sri Suprabhatham Builders — A Legacy, Composed in Stone" },
-      { property: "og:title", content: "Sri Suprabhatham Builders — A Legacy, Composed in Stone" },
-      { name: "twitter:title", content: "Sri Suprabhatham Builders — A Legacy, Composed in Stone" },
-      { name: "description", content: "Enter the cinematic experience centre of Sri Suprabhatham Builders — twenty-five years of boutique luxury residences in Chennai." },
-      { property: "og:description", content: "Enter the cinematic experience centre of Sri Suprabhatham Builders — twenty-five years of boutique luxury residences in Chennai." },
-      { name: "twitter:description", content: "Enter the cinematic experience centre of Sri Suprabhatham Builders — twenty-five years of boutique luxury residences in Chennai." },
+      { title: "Sri Suprabatham Builder — A Legacy, Composed in Stone" },
+      { property: "og:title", content: "Sri Suprabatham Builder — A Legacy, Composed in Stone" },
+      { name: "twitter:title", content: "Sri Suprabatham Builder — A Legacy, Composed in Stone" },
+      { name: "description", content: "Enter the cinematic experience centre of Sri Suprabatham Builder — twenty-five years of boutique luxury residences in Chennai." },
+      { property: "og:description", content: "Enter the cinematic experience centre of Sri Suprabatham Builder — twenty-five years of boutique luxury residences in Chennai." },
+      { name: "twitter:description", content: "Enter the cinematic experience centre of Sri Suprabatham Builder — twenty-five years of boutique luxury residences in Chennai." },
       { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/ec4519d4-08c3-4735-9344-32e8b29a6244/id-preview-fe098eb9--31dc9f5b-3045-41f2-8ec2-8b0f3f2f4762.lovable.app-1784102260404.png" },
       { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/ec4519d4-08c3-4735-9344-32e8b29a6244/id-preview-fe098eb9--31dc9f5b-3045-41f2-8ec2-8b0f3f2f4762.lovable.app-1784102260404.png" },
     ],

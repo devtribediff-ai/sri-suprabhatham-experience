@@ -10,9 +10,9 @@ import { company } from "@/lib/projects.data";
 export const Route = createFileRoute("/lobby")({
   head: () => ({
     meta: [
-      { title: "The Lobby — Sri Suprabhatham Builders" },
+      { title: "The Lobby — Sri Suprabatham Builder" },
       { name: "description", content: "Twenty-five years of quiet, uncompromising practice. Meet the founder, the managing director, and the studio's manifesto." },
-      { property: "og:title", content: "The Lobby — Sri Suprabhatham Builders" },
+      { property: "og:title", content: "The Lobby — Sri Suprabatham Builder" },
       { property: "og:description", content: "Legacy · Founders · Vision · Mission · Awards." },
       { property: "og:url", content: "/lobby" },
     ],
