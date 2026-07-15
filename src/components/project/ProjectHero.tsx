@@ -28,7 +28,11 @@ export function ProjectHero({ project }: { project: Project }) {
           fallback="obsidian"
         />
       </motion.div>
+      <GodRays intensity={0.22} />
+      <FogBands tone="warm" />
       <DustField count={80} />
+
+
 
       <motion.div
         variants={stagger(0.1, 0.4)}
