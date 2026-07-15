@@ -2,6 +2,8 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { PlaceholderImage } from "@/components/ui/PlaceholderImage";
 import { DustField } from "@/components/world/DustField";
+import { FogBands } from "@/components/world/FogBands";
+import { GodRays } from "@/components/world/GodRays";
 import { rise, softRise, sriEase, stagger } from "@/lib/motion";
 import type { Project } from "@/lib/projects.schema";
 
