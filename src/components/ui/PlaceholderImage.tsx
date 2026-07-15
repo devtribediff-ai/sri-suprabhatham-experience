@@ -15,12 +15,14 @@ interface Props {
   fit?: "cover" | "contain";
   /** Optional tint overlay strength 0..1 for text contrast. */
   vignette?: number;
+  /** Fallback surface when the image fails to load. */
+  fallback?: "marble" | "obsidian" | "brass";
 }
 
 /**
- * Image with graceful marble fallback. If the src fails to load, renders a
- * marble-veined SVG so the layout stays composed while the client swaps in
- * real assets. Add `loading="eager"` for hero images.
+ * Image with graceful designed fallback. If `src` fails to load, renders a
+ * material surface so the layout stays composed while the client swaps in
+ * real assets.
  */
 export function PlaceholderImage({
   src,
@@ -31,10 +33,19 @@ export function PlaceholderImage({
   loading = "lazy",
   fit = "cover",
   vignette = 0,
+  fallback = "marble",
 }: Props) {
   const [failed, setFailed] = useState(false);
+
+  const surface =
+    fallback === "obsidian"
+      ? "bg-obsidian text-brass-glow"
+      : fallback === "brass"
+      ? "bg-obsidian text-brass"
+      : "marble-surface marble-vein-overlay text-brass/60";
+
   return (
-    <figure className={cn("relative overflow-hidden bg-marble marble-vein-overlay marble-surface", aspect, className)}>
+    <figure className={cn("relative overflow-hidden bg-marble", surface, aspect, className)}>
       {!failed && (
         <img
           src={src}
@@ -49,20 +60,35 @@ export function PlaceholderImage({
         />
       )}
       {failed && (
-        <div className="absolute inset-0 grid place-items-center">
-          <svg
-            viewBox="0 0 200 200"
-            className="h-16 w-16 text-brass/60"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1"
-            aria-hidden
-          >
-            <rect x="20" y="20" width="160" height="160" />
-            <path d="M20 140 L70 90 L110 130 L150 90 L180 120" />
-            <circle cx="140" cy="60" r="10" />
-          </svg>
-        </div>
+        <>
+          {fallback === "obsidian" && (
+            <>
+              <div
+                aria-hidden
+                className="absolute inset-0 opacity-70"
+                style={{
+                  background:
+                    "radial-gradient(60% 45% at 50% 45%, oklch(0.28 0.02 60) 0%, oklch(0.12 0.008 60) 60%, #000 100%)",
+                }}
+              />
+              <div
+                aria-hidden
+                className="absolute inset-0 opacity-40 mix-blend-screen"
+                style={{
+                  background:
+                    "repeating-linear-gradient(72deg, transparent 0 60px, oklch(0.72 0.11 78 / 0.08) 60px 61px, transparent 61px 130px)",
+                }}
+              />
+            </>
+          )}
+          <div className="absolute inset-0 grid place-items-center">
+            <svg viewBox="0 0 200 200" className="h-16 w-16 opacity-70" fill="none" stroke="currentColor" strokeWidth="0.8" aria-hidden>
+              <rect x="20" y="20" width="160" height="160" />
+              <path d="M20 140 L70 90 L110 130 L150 90 L180 120" />
+              <circle cx="140" cy="60" r="10" />
+            </svg>
+          </div>
+        </>
       )}
       {vignette > 0 && (
         <div

@@ -25,6 +25,7 @@ export function ProjectHero({ project }: { project: Project }) {
           className="!h-full !w-full"
           loading="eager"
           vignette={0.75}
+          fallback="obsidian"
         />
       </motion.div>
       <DustField count={80} />
