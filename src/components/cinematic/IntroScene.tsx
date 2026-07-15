@@ -4,7 +4,7 @@ import { SunriseBackdrop } from "./SunriseBackdrop";
 import { DoorGate } from "./DoorGate";
 import { DustField } from "@/components/world/DustField";
 import { BirdsLayer } from "@/components/world/BirdsLayer";
-import { BrassLink } from "@/components/ui/BrassButton";
+import { BrassButton, BrassLink } from "@/components/ui/BrassButton";
 import { company } from "@/lib/projects.data";
 import { sriEase } from "@/lib/motion";
 import { useReducedMotionPreference } from "@/lib/device";
@@ -153,23 +153,24 @@ export function IntroScene() {
               transition={{ duration: 1.2, ease: sriEase }}
               className="mt-14 flex flex-col items-center gap-6"
             >
-              <BrassLink
-                to="/lobby"
-                tone="ink"
-                size="lg"
-                arrow
-                onClick={(e) => {
-                  if (reduced) return; // let navigation happen instantly
-                  e.preventDefault();
-                  setGateOpen(true);
-                  setTimeout(() => setDollying(true), 1600);
-                  setTimeout(() => {
-                    window.location.assign("/lobby");
-                  }, 3800);
-                }}
-              >
-                Enter the Experience
-              </BrassLink>
+              {reduced ? (
+                <BrassLink to="/lobby" tone="ink" size="lg" arrow>
+                  Enter the Experience
+                </BrassLink>
+              ) : (
+                <BrassButton
+                  tone="ink"
+                  size="lg"
+                  arrow
+                  onClick={() => {
+                    setGateOpen(true);
+                    setTimeout(() => setDollying(true), 1600);
+                    setTimeout(() => { window.location.assign("/lobby"); }, 3800);
+                  }}
+                >
+                  Enter the Experience
+                </BrassButton>
+              )}
               <span className="eyebrow text-ivory/50">Best experienced with sound</span>
             </motion.div>
           )}
