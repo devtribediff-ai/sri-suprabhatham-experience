@@ -81,12 +81,16 @@ export const BrassButton = forwardRef<HTMLButtonElement, ButtonProps>(
 );
 BrassButton.displayName = "BrassButton";
 
-type BrassLinkProps = Common & Omit<LinkProps, "children">;
+type BrassLinkProps = Common &
+  Omit<LinkProps, "children"> & {
+    onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
+  };
 
-export function BrassLink({ tone = "brass", size = "md", children, arrow, className, ...rest }: BrassLinkProps) {
+export function BrassLink({ tone = "brass", size = "md", children, arrow, className, onClick, ...rest }: BrassLinkProps) {
   return (
     <Link
-      {...rest}
+      {...(rest as LinkProps)}
+      onClick={onClick}
       className={cn(base, sizes[size], tones[tone], "no-underline", className)}
     >
       <span className="relative z-10 flex items-center gap-2.5">
