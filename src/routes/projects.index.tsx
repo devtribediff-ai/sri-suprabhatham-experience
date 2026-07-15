@@ -10,7 +10,7 @@ const MiniatureCity = lazy(() =>
   import("@/components/city/MiniatureCity").then((m) => ({ default: m.MiniatureCity })),
 );
 
-export const Route = createFileRoute("/projects")({
+export const Route = createFileRoute("/projects/")({
   head: () => ({
     meta: [
       { title: "The Projects — Sri Suprabhatham Builders" },
