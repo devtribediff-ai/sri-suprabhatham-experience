@@ -16,8 +16,8 @@ import { Cursor } from "@/components/ui/Cursor";
 import { AudioHost } from "@/components/ui/AudioHost";
 import { company } from "@/lib/projects.data";
 
-const SITE_NAME = "Sri Suprabhatham Builders";
-const SITE_TAGLINE = "Building Trust Since 2000 — Boutique luxury residences in Chennai.";
+const SITE_NAME = "Sri Suprabatham Builder";
+const SITE_TAGLINE = "Built on Trust. Designed for Generations. Boutique luxury residences in Chennai since 2002.";
 
 function NotFoundComponent() {
   return (
