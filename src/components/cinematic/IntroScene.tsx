@@ -5,7 +5,7 @@ import { DoorGate } from "./DoorGate";
 import { DustField } from "@/components/world/DustField";
 import { BirdsLayer } from "@/components/world/BirdsLayer";
 import { BrassButton, BrassLink } from "@/components/ui/BrassButton";
-import { company } from "@/lib/projects.data";
+import { brand, company } from "@/lib/projects.data";
 import { sriEase } from "@/lib/motion";
 import { useReducedMotionPreference } from "@/lib/device";
 
@@ -43,9 +43,22 @@ export function IntroScene() {
 
   return (
     <section
-      className="relative isolate min-h-dvh w-full overflow-hidden text-ivory"
-      aria-label="Sri Suprabhatham — arrival"
+      className="relative isolate min-h-dvh w-full overflow-hidden bg-black text-ivory"
+      aria-label="Sri Suprabatham Builder — arrival"
     >
+      {/* Royal red glow — emerges from the black, then softens as the sunrise takes over */}
+      <motion.div
+        aria-hidden
+        initial={{ opacity: 0 }}
+        animate={{ opacity: phase >= 1 ? (phase >= 3 ? 0.35 : 1) : 0 }}
+        transition={{ duration: 2.2, ease: sriEase }}
+        className="absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(65% 55% at 50% 55%, oklch(0.38 0.16 25 / 0.85) 0%, oklch(0.22 0.11 20 / 0.7) 35%, #050303 75%)",
+        }}
+      />
+
       {/* Sunrise sky (delayed until phase 3) */}
       <motion.div
         initial={{ opacity: 0 }}
@@ -99,15 +112,15 @@ export function IntroScene() {
               className="mb-6"
               aria-hidden
             >
-              <div
-                className="mx-auto grid h-24 w-24 place-items-center brass-frame"
+              <img
+                src={brand.logo}
+                alt="Sri Suprabatham Builder"
+                className="mx-auto h-28 w-auto md:h-36"
                 style={{
-                  background: "linear-gradient(180deg, oklch(0.18 0.01 60), oklch(0.11 0.008 60))",
-                  boxShadow: "0 0 60px oklch(0.72 0.11 78 / 0.5)",
+                  filter:
+                    "drop-shadow(0 0 40px oklch(0.72 0.11 78 / 0.55)) drop-shadow(0 0 90px oklch(0.42 0.18 25 / 0.35))",
                 }}
-              >
-                <span className="text-brass-gradient font-display text-5xl leading-none">S</span>
-              </div>
+              />
             </motion.div>
           )}
         </AnimatePresence>
@@ -118,10 +131,11 @@ export function IntroScene() {
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1.8, ease: sriEase, delay: 0.4 }}
-              className="font-display text-5xl leading-[0.95] tracking-tight text-ivory sm:text-7xl md:text-[8rem]"
+              className="font-display text-5xl leading-[0.95] tracking-tight text-ivory sm:text-7xl md:text-[7.5rem]"
               style={{ textShadow: "0 2px 40px oklch(0.14 0.008 60 / 0.8)" }}
             >
-              <span className="block">Sri Suprabhatham</span>
+              <span className="block">Sri Suprabatham</span>
+              <span className="block text-brass-gradient">Builder</span>
               <span
                 className="mt-3 block text-brass-gradient text-2xl sm:text-3xl md:text-4xl"
                 style={{ letterSpacing: "0.02em" }}
@@ -134,14 +148,19 @@ export function IntroScene() {
 
         <AnimatePresence>
           {phase >= 2 && (
-            <motion.p
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1.4, ease: sriEase, delay: 0.2 }}
-              className="mt-8 eyebrow text-ivory/80"
+              className="mt-8 flex flex-col items-center gap-3"
             >
-              <span className="inline-block h-px w-10 align-middle bg-brass" aria-hidden /> {company.tagline} <span className="inline-block h-px w-10 align-middle bg-brass" aria-hidden />
-            </motion.p>
+              <p className="eyebrow text-brass-glow">
+                <span className="inline-block h-px w-10 align-middle bg-brass" aria-hidden /> Building Trust Since {company.since} <span className="inline-block h-px w-10 align-middle bg-brass" aria-hidden />
+              </p>
+              <p className="font-display text-xl italic text-ivory/85 md:text-2xl">
+                {company.tagline}
+              </p>
+            </motion.div>
           )}
         </AnimatePresence>
 
