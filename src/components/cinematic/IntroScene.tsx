@@ -83,8 +83,25 @@ export function IntroScene() {
         <DoorGate open={gateOpen} />
       </motion.div>
 
+      {/* Atmospheric layers */}
+      <GodRays intensity={phase >= 3 ? 0.4 : 0.18} />
+      <FogBands tone="warm" />
       {/* Dust motes — always on */}
       <DustField count={100} />
+
+      {/* Vishnu Chakra — the opening motif */}
+      <div className="pointer-events-none absolute inset-0 z-10 grid place-items-center">
+        <motion.div
+          animate={{
+            opacity: phase === 0 ? 0 : phase < 2 ? 1 : 0.25,
+            scale: phase >= 2 ? 1.4 : 1,
+            y: phase >= 2 ? -60 : 0,
+          }}
+          transition={{ duration: 2, ease: sriEase }}
+        >
+          <ChakraMark size={260} visible={phase >= 0} />
+        </motion.div>
+      </div>
 
       {/* Camera dolly-in overlay — a white bloom + zoom right before route change */}
       <AnimatePresence>
