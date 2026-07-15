@@ -16,24 +16,24 @@ export function SunriseBackdrop({ progress = 1 }: { progress?: number }) {
             "radial-gradient(120% 90% at 50% 130%, oklch(0.32 0.03 60) 0%, oklch(0.12 0.008 60) 55%, #000 100%)",
         }}
       />
-      {/* Rising sun */}
+      {/* Rising sun — kept small and low so the wordmark stays legible */}
       <motion.div
-        initial={{ y: "62%", opacity: 0 }}
-        animate={{ y: `${62 - progress * 30}%`, opacity: progress }}
+        initial={{ y: "80%", opacity: 0 }}
+        animate={{ y: `${80 - progress * 26}%`, opacity: progress * 0.9 }}
         transition={{ duration: 3.8, ease: sriEase }}
-        className="absolute left-1/2 h-[70vh] w-[70vh] -translate-x-1/2 rounded-full"
+        className="absolute left-1/2 h-[45vh] w-[45vh] -translate-x-1/2 rounded-full"
         style={{
           background:
-            "radial-gradient(circle, oklch(0.96 0.05 88) 0%, oklch(0.72 0.16 66 / 0.85) 30%, oklch(0.5 0.16 25 / 0.4) 55%, transparent 75%)",
-          filter: "blur(2px)",
+            "radial-gradient(circle, oklch(0.86 0.12 88 / 0.9) 0%, oklch(0.62 0.16 60 / 0.5) 45%, transparent 75%)",
+          filter: "blur(4px)",
         }}
       />
-      {/* Warm horizon wash */}
+      {/* Warm horizon wash — restricted to the lower third */}
       <motion.div
         initial={{ opacity: 0 }}
-        animate={{ opacity: progress }}
+        animate={{ opacity: progress * 0.85 }}
         transition={{ duration: 3.4, ease: sriEase, delay: 0.2 }}
-        className="absolute inset-x-0 bottom-0 h-1/2"
+        className="absolute inset-x-0 bottom-0 h-2/5"
         style={{ background: "var(--gradient-sunrise)" }}
       />
       {/* Volumetric god rays */}

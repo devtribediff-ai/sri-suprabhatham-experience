@@ -118,7 +118,8 @@ export function IntroScene() {
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1.8, ease: sriEase, delay: 0.4 }}
-              className="font-display text-5xl leading-[0.95] tracking-tight sm:text-7xl md:text-[9rem]"
+              className="font-display text-5xl leading-[0.95] tracking-tight text-ivory sm:text-7xl md:text-[8rem]"
+              style={{ textShadow: "0 2px 40px oklch(0.14 0.008 60 / 0.8)" }}
             >
               <span className="block">Sri Suprabhatham</span>
               <span
