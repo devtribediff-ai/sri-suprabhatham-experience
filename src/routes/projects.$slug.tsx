@@ -16,14 +16,14 @@ export const Route = createFileRoute("/projects/$slug")({
   },
   head: ({ loaderData, params }) => {
     if (!loaderData) {
-      return { meta: [{ title: "Residence not found — Sri Suprabhatham" }, { name: "robots", content: "noindex" }] };
+      return { meta: [{ title: "Residence not found — Sri Suprabatham" }, { name: "robots", content: "noindex" }] };
     }
     const p = loaderData.project;
     return {
       meta: [
-        { title: `${p.name} — ${p.tagline} · Sri Suprabhatham` },
+        { title: `${p.name} — ${p.tagline} · Sri Suprabatham` },
         { name: "description", content: p.description },
-        { property: "og:title", content: `${p.name} — Sri Suprabhatham` },
+        { property: "og:title", content: `${p.name} — Sri Suprabatham` },
         { property: "og:description", content: p.description },
         { property: "og:type", content: "product" },
         { property: "og:url", content: `/projects/${params.slug}` },

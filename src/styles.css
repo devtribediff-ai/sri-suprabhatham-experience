@@ -5,7 +5,7 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * Sri Suprabhatham — Design System
+ * Sri Suprabatham — Design System
  * A cinematic marble & brass palette. All tokens in oklch.
  * Never hardcode colors in components — always use these tokens.
  */
