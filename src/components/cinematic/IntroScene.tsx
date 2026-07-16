@@ -223,10 +223,12 @@ export function IntroScene() {
         style={{ background: "linear-gradient(180deg, transparent, oklch(0.08 0.008 60 / 0.7))" }}
       />
 
-      {/* Skip link for a11y */}
+      {/* Skip link for a11y — hidden until wordmark has emerged so it never
+          disrupts the arrival silence. Always focusable for keyboard users. */}
       <a
         href="/lobby"
-        className="absolute right-6 top-24 z-30 text-[10px] uppercase tracking-[0.28em] text-ivory/60 underline underline-offset-4 transition-colors hover:text-brass focus-visible:text-brass"
+        className="absolute right-6 top-24 z-30 text-[10px] uppercase tracking-[0.28em] text-ivory/40 underline underline-offset-4 transition-opacity duration-700 hover:text-brass focus-visible:text-brass focus-visible:opacity-100"
+        style={{ opacity: phase >= 2 ? 1 : 0, pointerEvents: phase >= 2 ? "auto" : "none" }}
       >
         Skip intro
       </a>

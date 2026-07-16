@@ -1,6 +1,6 @@
 import { Link, useMatchRoute, useRouterState } from "@tanstack/react-router";
 import { motion, useMotionValueEvent, useScroll } from "framer-motion";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { AudioToggle } from "./AudioToggle";
 import { brand, company } from "@/lib/projects.data";
@@ -16,25 +16,57 @@ const items = [
 const DARK_ROUTES = ["/", "/projects", "/outro"];
 const DARK_ROUTE_PREFIXES = ["/projects/"];
 
+/** Routes where nav chrome should stay hidden entirely — the arrival scene
+ *  owns its own presence and nav there breaks the "camera in silence" mood. */
+const CHROMELESS_ROUTES = ["/", "/outro"];
+
+const IDLE_MS = 2400;
+
 /**
- * Auto-contrast nav: reads the current pathname + scroll position and
- * flips between light-on-dark and dark-on-light so the wordmark stays
- * legible against any hero. A soft blur pill fades in past 40px scroll to
- * guarantee contrast when content passes under it.
+ * Auto-contrast, idle-hiding nav. The chrome fades away after ~2.4s of
+ * pointer / key stillness so the visitor feels like they are inside a
+ * continuous camera journey, not a website. Any pointer, key, wheel, or
+ * touch gesture reveals it again. On the arrival and outro routes the
+ * nav stays hidden entirely.
  */
 export function Nav() {
   const { scrollY } = useScroll();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [awake, setAwake] = useState(true);
   const match = useMatchRoute();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const hiddenRoute = CHROMELESS_ROUTES.includes(pathname);
+  const timer = useRef<number | null>(null);
 
   useMotionValueEvent(scrollY, "change", (v) => {
     setScrolled(v > 40);
   });
 
+  // Idle-hide: any input resets the timer.
+  useEffect(() => {
+    const wake = () => {
+      setAwake(true);
+      if (timer.current) window.clearTimeout(timer.current);
+      timer.current = window.setTimeout(() => setAwake(false), IDLE_MS);
+    };
+    wake();
+    const opts = { passive: true } as AddEventListenerOptions;
+    window.addEventListener("pointermove", wake, opts);
+    window.addEventListener("wheel", wake, opts);
+    window.addEventListener("touchstart", wake, opts);
+    window.addEventListener("keydown", wake);
+    return () => {
+      if (timer.current) window.clearTimeout(timer.current);
+      window.removeEventListener("pointermove", wake);
+      window.removeEventListener("wheel", wake);
+      window.removeEventListener("touchstart", wake);
+      window.removeEventListener("keydown", wake);
+    };
+  }, [pathname]);
+
   const onDarkHero = useMemo(() => {
-    if (scrolled) return false; // once past hero, everyone gets glass pill
+    if (scrolled) return false;
     if (DARK_ROUTES.includes(pathname)) return true;
     return DARK_ROUTE_PREFIXES.some((p) => pathname.startsWith(p));
   }, [pathname, scrolled]);
@@ -44,13 +76,19 @@ export function Nav() {
   const borderClass = onDarkHero ? "border-ivory/25 hover:border-brass hover:text-brass" : "border-obsidian/25 hover:border-brass hover:text-brass";
   const eyebrowClass = onDarkHero ? "text-brass-glow" : "text-brass-deep";
 
+  const visible = !hiddenRoute && (awake || open);
+
   return (
     <motion.nav
       initial={{ y: -30, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}
+      animate={{
+        y: visible ? 0 : -18,
+        opacity: visible ? 1 : 0,
+      }}
+      transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+      style={{ pointerEvents: visible ? "auto" : "none" }}
       className={cn(
-        "fixed inset-x-0 top-0 z-50 transition-all duration-700",
+        "fixed inset-x-0 top-0 z-50 transition-[padding,background] duration-700",
         scrolled ? "glass-panel py-3" : "py-6",
       )}
     >
