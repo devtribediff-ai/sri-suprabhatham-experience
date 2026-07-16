@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { Phone, MessageCircle, Calendar, FileDown, MapPin } from "lucide-react";
 import { ConsultationLounge, type LoungeAction } from "@/components/lounge/ConsultationLounge";
 import { company } from "@/lib/projects.data";
@@ -22,32 +22,29 @@ function LoungePage() {
   const tel = `tel:${company.phones[0].replace(/\s+/g, "")}`;
   const mail = `mailto:${company.email}?subject=${encodeURIComponent("Enquiry — Sri Suprabatham")}`;
   const actions: LoungeAction[] = [
-    { id: "visit", title: "Book a Site Visit", hint: "Private walkthrough at any residence", primary: true, href: mail, icon: <MapPin size={22} strokeWidth={1.25} /> },
-    { id: "meeting", title: "Schedule a Meeting", hint: "Consult with our design lead", href: mail, icon: <Calendar size={22} strokeWidth={1.25} /> },
-    { id: "whatsapp", title: "Chat on WhatsApp", hint: company.whatsapp, href: wa, icon: <MessageCircle size={22} strokeWidth={1.25} /> },
-    { id: "call", title: "Call the Studio", hint: company.phones[0], href: tel, icon: <Phone size={22} strokeWidth={1.25} /> },
-    { id: "brochure", title: "Request Brochures", hint: "All residences · PDF via email", href: mail, icon: <FileDown size={22} strokeWidth={1.25} /> },
+    { id: "visit", title: "Book a Private Visit", hint: "Private walkthrough at any residence", primary: true, href: mail, icon: <MapPin size={22} strokeWidth={1.25} /> },
+    { id: "meeting", title: "Meet Our Team", hint: "Consult with our design lead", href: mail, icon: <Calendar size={22} strokeWidth={1.25} /> },
+    { id: "brochure", title: "Download Brochure", hint: "All residences · PDF via email", href: mail, icon: <FileDown size={22} strokeWidth={1.25} /> },
+    { id: "whatsapp", title: "WhatsApp", hint: company.whatsapp, href: wa, icon: <MessageCircle size={22} strokeWidth={1.25} /> },
+    { id: "call", title: "Call Now", hint: company.phones[0], href: tel, icon: <Phone size={22} strokeWidth={1.25} /> },
   ];
   return (
     <div className="pt-32">
       <ConsultationLounge
         eyebrow="The Lounge"
-        title={<>A quiet <span className="text-brass-gradient">consultation</span>.</>}
+        title={<>Your next chapter <span className="text-brass-gradient">begins here</span>.</>}
         subtitle="Choose the way you would like to begin. Whichever door you knock on, it opens on the same side of the studio."
         actions={actions}
       />
-      <section className="relative bg-obsidian py-20 text-center text-ivory">
-        <p className="eyebrow text-brass-glow">Conclude the Journey</p>
-        <h3 className="mx-auto mt-4 max-w-2xl font-display text-3xl md:text-5xl">
-          Watch the <span className="text-brass-gradient">closing frame</span>.
-        </h3>
-        <a
-          href="/outro"
-          className="mt-8 inline-block border border-brass/50 px-8 py-3 text-[11px] uppercase tracking-[0.32em] text-brass-glow transition-colors hover:border-brass hover:bg-brass/10"
+      {/* Quiet return glyph — the natural loop back to the entrance. */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-6 z-10 flex justify-center">
+        <Link
+          to="/outro"
+          className="pointer-events-auto text-[10px] uppercase tracking-[0.32em] text-ivory/40 underline-offset-4 transition-colors hover:text-brass"
         >
           Depart the experience
-        </a>
-      </section>
+        </Link>
+      </div>
     </div>
   );
 }

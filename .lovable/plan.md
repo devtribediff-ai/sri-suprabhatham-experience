@@ -1,125 +1,75 @@
-## Goal
+# WebPlace — One Continuous Camera Journey
 
-Refine the existing build into one continuous cinematic film. No UI redesign, no brand changes — only narrative, motion, environmental, and readability upgrades. All refinements stay data-driven and preserve the existing component architecture.
+Not a redesign. A change to the *interaction model*: the visitor is a camera moving through one architectural world. Existing UI, data, brochure assets, palette and typography stay. What changes is how routes connect, how the camera moves, and how UI chrome behaves.
 
-## Scope (11 refinements)
+## Guiding rules (applied everywhere)
 
-### 1. Cinematic opening — `IntroScene.tsx` + new `ChakraMark.tsx` + `audio.ts`
-Extend the timeline to a scored sequence:
-- 0.0s black
-- 0.8s ambient orchestral pad starts (existing AudioHost)
-- 1.2s single temple-bell strike (new short SFX, ElevenLabs or lightweight synth via WebAudio)
-- 1.6s Vishnu Chakra emerges (SVG, slow rotation + brass glow) — new component
-- 2.8s SSB logo cross-fades in below the chakra
-- 3.8s "Building Trust Since 2002" hairline
-- 4.6s tagline
-- 5.6s brass doors (existing `DoorGate`) become visible closed
-- 6.4s "Enter the Experience" CTA
-- On click: doors part → camera dolly-in (existing) → route to `/lobby`
+- No hard cuts. Every route change is masked by an in-world camera motion (dolly, door pass, terrace step-out, entrance fly-through, lounge dissolve).
+- No stacked "sections". Each existing page becomes a *chapter* on a horizontally-choreographed, vertically-scrolled scene with pinned camera beats.
+- Navigation chrome hides by default. It fades in only when the camera is idle > 2s, and dissolves the moment the visitor moves.
+- No white flashes, no blank loaders. Route transitions are warm-black or brass-bloom veils driven by `framer-motion` `AnimatePresence` at the router level.
+- Ambient audio is continuous across routes; only *layers* change per act (bell → hall reverb → city wind + birds → interior room tone → lounge strings).
 
-### 2. Lobby as marble museum — `lobby.tsx` + existing lobby components
-Re-sequence the lobby into scroll-driven "rooms" with scroll-linked camera feel (parallax + section pinning via existing framer-motion `useScroll`):
-1. MarbleHall (arrival)
-2. FounderCard — Founder
-3. FounderCard — Managing Director
-4. LegacyTimeline (engraved brass rail — see #10)
-5. QualityPromise (new small component, reuses `GlassCard`)
-6. VisionMission
-7. AwardsRibbon
-Each section fades/rises as it enters; a persistent hairline "gallery progress" indicator on the right.
+## The five acts (mapping to existing routes)
 
-### 3. Environmental city — `MiniatureCity.tsx` + new world layers
-Add ground plane detail so monoliths sit in a world:
-- Road ribbons (thin dark strips radiating out) via instanced meshes
-- Denser `TreeCluster` bands + a few taller cypress silhouettes
-- Reflection pool (already present) — deepen with subtle ripple normal
-- Volumetric fog (scene.fog exists — tune density + add ground haze plane)
-- Moving cloud sprites overhead (translucent planes drifting)
-- Existing `BirdsLayer` — port to 3D as sprite flock (or keep DOM overlay on top of canvas)
-- Warm directional sunrise light (already present — retune color + shadow softness)
-- Landscaped garden ring (low green disks between trees)
+```text
+ACT 1  Arrival           →  /            (IntroScene)
+ACT 2  Legacy Gallery    →  /lobby       (MarbleHall + lobby sections re-choreographed)
+ACT 3  Discovery City    →  /projects    (MiniatureCity)
+ACT 4  Residence Walk    →  /projects/$  (ProjectHero → Overview → … → Location)
+ACT 5  Consultation      →  /lounge      (ConsultationLounge)
+Coda   Outro             →  /outro       (already exists)
+```
 
-### 4. Camera choreography — continuous flight between routes
-Introduce shared "flight veil" transitions:
-- New `CinematicTransition` provider in `__root.tsx` — on route change, cross-fade through a warm bloom + subtle motion-blur veil (~800ms) so cuts read as one drone flight.
-- Intro → Lobby: use existing dolly-in bloom (already implemented)
-- Lobby → City: fade to warm sky, city fades up (already partial — extend duration)
-- City → Project: existing fly-to-monolith → keep, add bloom bridge
-- Project → Lounge: doors-close-style veil
+## Chapter-by-chapter changes
 
-### 5. Project pages — `projects.$slug.tsx` + `ProjectHero.tsx` + `ProjectFloorPlans.tsx` + `ProjectAmenities.tsx`
-- Hero: animated Ken-Burns pan on the brochure hero image + parallax overlay of location + specs
-- Layered parallax between hero, overview, gallery
-- Gallery: replace grid pop with smooth horizontal drift + framer `AnimatePresence`
-- Specifications: elegant two-column typographic ledger (already close — tighten spacing, add hairlines)
-- Floor plans: fade + subtle scale/rotate reveal on scroll; add zoom-on-click lightbox
-- Global: enable smooth scrolling behavior for immersive feel
+### Act 1 — Arrival
+- Keep current IntroScene structure. Remove any visible skip link until phase ≥ 2; move it to a low-contrast corner glyph.
+- The "Enter the Experience" button triggers `DoorGate` open → camera dolly bloom → route push to `/lobby`. The bloom veil is *owned by the router transition layer*, not the intro, so the veil persists across the route change and dissolves inside the marble hall. This is the single most important fix — today the veil unmounts with the intro.
 
-### 6. Nav readability — `Nav.tsx`
-Auto-invert nav text based on scroll position/route:
-- Track `window.scrollY` + current route
-- On dark hero sections (intro, city, project hero) → ivory text
-- On marble/light lobby sections → obsidian text
-- Add a very soft backdrop-blur pill behind the nav that fades in past 40px scroll to guarantee contrast at all times
+### Act 2 — Legacy Gallery
+- Convert `/lobby` from stacked sections into a single pinned scroll-scene using `framer-motion` `useScroll` on a tall outer container. Inner "rooms" (MarbleHall → Founder → Vision/Mission → Quality Promise → Awards → Legacy Timeline) translate horizontally as the visitor scrolls vertically, so it *feels like walking down a corridor*.
+- Legacy Timeline becomes an engraved marble frieze along the corridor wall; each milestone lights up as it enters a center focus band (not on hover).
+- At end of corridor: a terrace archway. Reaching it triggers a soft prompt "Step onto the terrace" → routes to `/projects` with a *step-out-to-daylight* transition (warm overexposure, not white).
 
-### 7. Consultation lounge — `ConsultationLounge.tsx`
-Restyle (not redesign) into a "room":
-- Full-bleed marble backdrop with brass sconce gradients (reuse `MarbleHall` motifs)
-- Centerpiece: a "consultation table" card — brass-framed, holds the CTA row (Book Site Visit / Schedule Meeting / WhatsApp / Call / Brochure) as engraved buttons
-- Warm-lit vignette + dust motes
-- Founder signature line at the bottom
+### Act 3 — Discovery City
+- Keep `MiniatureCity`. Remove card-like project labels; replace with subtle brass ground-plaques that only appear on proximity (cursor within N px).
+- Hover on a building: windows illuminate (already), plus a subtle orchestral cue layer (`audio.ts` gains a per-building stinger), and camera slowly orbits via CSS transform on the city stage.
+- Click: camera flies toward the building's entrance — a scale/translate on the city stage combined with a matched brass-door mask that grows to fill the viewport, then route to `/projects/$slug`. On the project page the same door mask *opens outward*, so the cut is invisible.
 
-### 8. Environmental life — new/updated world components
-- `WindLayer` — subtle CSS transform sway on any element marked `data-sway`
-- Extend `BirdsLayer` with parallax drift
-- `GodRays` component (radial gradient shafts, additive blend) placed in intro + lounge
-- `FogBands` — low horizontal gradient bands drifting across hero sections
-- Reuse existing `DustField` more widely (lobby, lounge, project hero)
+### Act 4 — Residence Walk
+- The project page becomes a single guided walkthrough with pinned camera beats, not a scroll-stack. Order:
+  Exterior arrival → Architectural reveal → Entrance → Living → Dining → Kitchen → Master → Children → Balcony → Amenities → Quality → Materials → Specs → Floor plans → Location → Lounge invite.
+- Each beat uses one hero brochure image with Ken-Burns pan + parallax caption. Advance is driven by scroll, but *snap-progresses* one beat at a time (scroll-jack with escape hatch — respects reduced-motion and `prefers-reduced-motion`).
+- Floor plans keep zoom lightbox; specifications ledger stays but restyled as an engraved plaque, not a card.
+- Final beat "Consultation Lounge" is a marble doorway; clicking it fires the door-mask transition to `/lounge`.
 
-### 9. Founder museum — `FounderCard.tsx`
-Upgrade the two founder cards into portrait "plinths":
-- Portrait in a brass-framed arch (CSS mask)
-- Engraved name plate below
-- Quote pull-out in serif italic
-- Slow reveal on scroll (blur → sharp)
+### Act 5 — Consultation Lounge
+- Restyle as a full-bleed marble room (already partway there). Remove any visible form on load. Show only the headline "Your next chapter begins here." and five brass actions: Book Private Visit, Meet Our Team, Download Brochure, WhatsApp, Call Now.
+- Selecting an action reveals its interface *inside the lounge* (a brass-framed panel slides up on the marble table); no route change, no modal shell.
+- A quiet "Return to the entrance" glyph in the corner routes back to `/` with a fade-to-black — this becomes the natural loop into the Outro.
 
-### 10. Engraved brass legacy timeline — `LegacyTimeline.tsx`
-Redo as a horizontal brass rail with engraved year markers:
-- Thin brass line spanning full width
-- Year ticks with serif numerals
-- Each milestone reveals its label + micro-render on scroll
-- Sticky/pinned while user scrolls its section (framer-motion `useScroll`)
+## Global systems to add / upgrade
 
-### 11. Cinematic outro — new `/outro` route + `OutroScene.tsx`
-Reached from a "Conclude the Journey" link in the lounge:
-- Camera pulls back from the city (still image + slow zoom-out)
-- Sky transitions from warm noon → sunset gradient
-- SSB logo fades in
-- "Built on Trust. Designed for Generations."
-- Fade to black
-- Small "Return to the Lobby" hairline link
+1. **Router transition layer** (`CinematicTransition.tsx`): replace current single-flash veil with a *pair* of motion layers — `enter` (brass bloom or warm black) and `exit` — orchestrated per source→destination pair via a small route-pair map in `src/lib/scene-progress.ts`. Ensures every transition is motivated.
+2. **Continuous audio bus** (`src/lib/audio.ts` + `AudioHost.tsx`): keep a single `<audio>` element alive across routes; crossfade layer gains per act. Add per-building stingers for Act 3 hovers.
+3. **Chrome auto-hide** (`Nav.tsx`): hide after 2s idle, reveal on pointer move or key. Keeps existing scroll-aware contrast logic.
+4. **Reduced motion + escape hatch**: every scroll-jack, dolly, and mask honors `prefers-reduced-motion` — falls back to standard vertical scroll and simple fades.
+5. **Scene progress store** (`scene-progress.ts`): tiny store tracking `{ act, beat }` so audio, chrome, and cursor can react without prop-drilling.
 
-## Technical details
+## Files touched
 
-- No new heavy deps. Use existing `framer-motion`, `@react-three/fiber`, `@react-three/drei`, `@react-three/postprocessing`.
-- Temple bell: bundle a small MP3 to `src/assets/audio/bell.mp3` (placeholder note left for user to replace).
-- Vishnu Chakra: pure SVG so it scales crisply and animates cheaply.
-- Reduced-motion path preserved — all new motion respects `useReducedMotionPreference`.
-- All copy stays data-driven via `projects.data.ts` and `company` object.
-- Nav contrast: driven by `useLocation` + `scrollY` listener; no per-page prop drilling.
-- Route transitions live in `__root.tsx` wrapper — no page code changes required.
-- Add `/outro` as a new file `src/routes/outro.tsx`.
-- Update `mem://index.md` with narrative act structure.
+- Edit: `src/routes/__root.tsx` (transition layer wiring), `src/components/world/CinematicTransition.tsx` (pair layers, route-pair map), `src/components/ui/Nav.tsx` (idle hide), `src/components/ui/AudioHost.tsx` + `src/lib/audio.ts` (continuous bus, layers), `src/lib/scene-progress.ts` (store expansion), `src/components/cinematic/IntroScene.tsx` (hand off veil to router), `src/routes/lobby.tsx` + `MarbleHall.tsx` + `LegacyTimeline.tsx` + `FounderCard.tsx` + `VisionMission.tsx` + `QualityPromise.tsx` + `AwardsRibbon.tsx` (corridor choreography), `src/routes/projects.index.tsx` + `city/MiniatureCity.tsx` + `city/ProjectMonolith.tsx` (proximity plaques, orbit, door-mask launch), `src/routes/projects.$slug.tsx` + all `components/project/*` (beat-based walkthrough), `src/routes/lounge.tsx` + `lounge/ConsultationLounge.tsx` (in-room action reveals).
+- New: `src/components/world/DoorMask.tsx` (shared mask used for city→project and project→lounge), `src/components/world/CorridorTrack.tsx` (horizontal pinned scroller for lobby), `src/components/project/WalkthroughBeat.tsx` (single beat primitive for Act 4), `src/lib/route-pairs.ts` (transition choreography map), `src/lib/scroll-snap.ts` (beat-snap helper with reduced-motion opt-out).
+- Not touched: brand tokens, brochure data, palette, typography, existing brochure images, `Outro`, footer content, `sitemap`, SEO metadata.
 
 ## Out of scope
+- No new copy, no rewriting brochure content.
+- No real 3D (WebGL/Three) — the "city" and "camera" remain 2.5D CSS transforms + parallax, which is what already works.
+- No new brand identity, no new palette, no new fonts.
+- No auth, no CMS, no backend changes.
 
-- Real founder photos, videos, drone footage → placeholders remain, user swaps assets.
-- 360°/VR/AR — future phases.
-- Any brand color, logo, or typography changes.
+## Success check
+Manual walkthrough after build: from `/` → click Enter → doors part → corridor scrolls horizontally → terrace step-out → hover a building (windows light, orbit) → click → door mask → residence walkthrough beats → final doorway → lounge → action reveal in-room → return glyph → outro. Zero visible page cuts, zero white flashes, chrome absent unless idle. Reduced-motion path verified via DevTools emulation.
 
-## Deliverables
-
-- Updated: `IntroScene.tsx`, `Nav.tsx`, `MiniatureCity.tsx`, `MarbleHall.tsx`, `LegacyTimeline.tsx`, `FounderCard.tsx`, `ConsultationLounge.tsx`, `ProjectHero.tsx`, `ProjectFloorPlans.tsx`, `projects.$slug.tsx`, `lobby.tsx`, `lounge.tsx`, `__root.tsx`, `styles.css`, `audio.ts`.
-- New: `ChakraMark.tsx`, `QualityPromise.tsx`, `CinematicTransition.tsx`, `GodRays.tsx`, `FogBands.tsx`, `WindLayer.tsx`, `OutroScene.tsx`, `routes/outro.tsx`, `assets/audio/bell.mp3` (placeholder).
-
-After implementation I'll verify with a Playwright pass across intro → lobby → city → project → lounge → outro and screenshot each transition.
+Reply "go" and I'll build it.
